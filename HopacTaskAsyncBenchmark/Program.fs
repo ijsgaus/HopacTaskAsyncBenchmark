@@ -14,7 +14,11 @@ open FSharpBenchmarks
 type Benchs() =
     let a = [| 1L..50000L |]
     [<Benchmark>]
-    member __.reduceParallelFSharpAsyncs () = reduceParallelAsync (+) a    
+    member __.reduceParallelFSharpAsyncs () = reduceParallelAsync (+) a
+    [<Benchmark>]
+    member __.reduceParallelFSharpTaskBuilder () = reduceParallelTaskBuilder (+) a
+    [<Benchmark>]
+    member __.reduceParallelFSharpSync () = reduceFsharpSync (+) a
     [<Benchmark(Baseline = true)>]
     member __.reduceParallelCSharpAsyncs () = Benchmarks.ReduceAsyncAwait(Func<_,_,_>(fun a b-> a+b), a)
     [<Benchmark>]
@@ -25,7 +29,7 @@ type Benchs() =
     member __.reduceParallelValueTasksPattern () = Benchmarks.ReduceVTPattern(Func<_,_,_>(fun a b-> a+b), a)
     [<Benchmark>]
     member __.reduceParallelHopac () = reduceParallelHopac (+) a
-    
+
 
 [<EntryPoint>]
 let main argv =
