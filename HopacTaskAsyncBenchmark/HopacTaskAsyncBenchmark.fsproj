@@ -15,4 +15,9 @@
     <PackageReference Include="Hopac" Version="0.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CSharpBencmarks\CSharpBencmarks.csproj" />
+    <ProjectReference Include="..\FSharpBenchmarks\FSharpBenchmarks.fsproj" />
+  </ItemGroup>
+
 </Project>
