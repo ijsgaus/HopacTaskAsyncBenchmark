@@ -11,6 +11,7 @@ open FSharpBenchmarks
 [<GcServer(true)>]
 [<MemoryDiagnoser>]
 [<MarkdownExporterAttribute.GitHub>]
+[<DisassemblyDiagnoser(printAsm = true, printIL = true)>]
 type Benchs() =
     let a = [| 1L..50000L |]
     [<Benchmark>]
