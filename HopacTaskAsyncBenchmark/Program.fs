@@ -29,6 +29,8 @@ type Benchs() =
     [<Benchmark>]
     member __.reduceParallelValueTasksPattern () = Benchmarks.ReduceVTPattern(Func<_,_,_>(fun a b-> a+b), a)
     [<Benchmark>]
+    member __.ReduceTaskRun () = Benchmarks.ReduceTaskRun(Func<_,_,_>(fun a b-> a+b), a)
+    [<Benchmark>]
     member __.reduceParallelHopac () = reduceParallelHopac (+) a
 
 

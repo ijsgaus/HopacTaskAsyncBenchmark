@@ -129,5 +129,36 @@ namespace CSharpBencmarks
         {
             return ReduceVTPattern(f, ie, 0, ie.Length-1).Result;
         }
+        
+        private static T ReduceTaskRun<T>(Func<T, T, T> f, T[] ie, int start, int finish)
+        {
+            var len = finish - start + 1;
+            if (len == 0)
+            {
+                throw new Exception("Sequence contains no elements");
+            }
+
+            if (len == 1)
+            {
+                return ie[start];
+            }
+
+            if (len == 2)
+            {
+                return f(ie[start], ie[start + 1]);
+            }
+
+            var h = len / 2 + start;
+            var o1Task = Task.Factory.StartNew(() => ReduceTaskRun(f, ie, start, h-1), TaskCreationOptions.RunContinuationsAsynchronously);
+            var o2Task = Task.Factory.StartNew(() => ReduceTaskRun(f, ie, h, finish), TaskCreationOptions.RunContinuationsAsynchronously);
+            var o1 = o1Task.GetAwaiter().GetResult();
+            var o2 = o2Task.GetAwaiter().GetResult();
+            return f(o1, o2);
+        }
+        
+        public static T ReduceTaskRun<T>(Func<T, T, T> f, T[] ie)
+        {
+            return Task.Factory.StartNew(() => ReduceTaskRun(f, ie, 0, ie.Length - 1), TaskCreationOptions.RunContinuationsAsynchronously).GetAwaiter().GetResult();
+        }
     }
 }
